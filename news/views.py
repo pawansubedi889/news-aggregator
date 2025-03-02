@@ -16,25 +16,24 @@ def scrape(request, name):
     content = session.get(url).content
     soup = BSoup(content, "html.parser")
 
-    News = soup.find_all("div", {"class": "title-news-list top-main-news-list"})
-    print(News)
+    # Updated class for the news container
+    News = soup.find_all("li", {"class": "title-news-list top-main-news-list"})
 
     for article in News:
-        main = article.find_all("a", href=True)
+        # Extracting title
+        titlex = article.find("h2", {"class": "title-container d-flex flex-column"}).find("a")
+        title = titlex.text.strip() if titlex else "No Title"
 
-        linkx = article.find("a", {"class": "title medium-title"})
-        link = linkx["href"]
+        # Extracting link
+        link = titlex["href"] if titlex else "#"
 
-        titlex = article.find("h2", {"class": "home-category text-uppercase"})
-        title = titlex.text
+        # Extracting image
+        img_tag = article.find("img")
+        imgx = img_tag["src"] if img_tag else ""
 
-        imgx = article.find("img")["data-src"]
-
-        new_headline = Headline()
-        new_headline.title = title
-        new_headline.url = link
-        new_headline.image = imgx
+        new_headline = Headline(title=title, url=link, image=imgx)
         new_headline.save()
+
     return redirect("../")
 
 
