@@ -7,6 +7,7 @@ name = "pypi"
 django = "*"
 requests = "*"
 bs4 = "*"
+django-social-share = "*"
 
 [dev-packages]
 
