@@ -17,6 +17,7 @@ def scrape(request, name):
     soup = BSoup(content, "html.parser")
 
     News = soup.find_all("div", {"class": "title-news-list top-main-news-list"})
+    print(News)
 
     for article in News:
         main = article.find_all("a", href=True)
